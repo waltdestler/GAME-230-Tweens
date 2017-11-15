@@ -142,6 +142,6 @@ void render_frame()
 	txt.setFont(font);
 	txt.setPosition(shape.getPosition() + Vector2f(0, 110));
 	txt.setCharacterSize(24);
-	txt.setColor(Color::White);
+	txt.setFillColor(Color::White);
 	window.draw(txt);
 }
