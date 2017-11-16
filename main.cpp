@@ -7,6 +7,7 @@
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Main.hpp>
+#include "tweens.h"
 
 using namespace std;
 using namespace sf;
@@ -35,90 +36,37 @@ int main()
 
 	Clock clock;
 
-while (window.isOpen())
-{
-	Event event;
-	while (window.pollEvent(event))
+	while (window.isOpen())
 	{
-		if (event.type == sf::Event::Closed)
+		Event event;
+		while (window.pollEvent(event))
 		{
-			window.close();
-		}
-		else if (event.type == sf::Event::KeyPressed && event.key.code == Keyboard::Space)
-		{
-			if (isTweening)
+			if (event.type == sf::Event::Closed)
 			{
-				isTweening = false;
-				t = 0;
+				window.close();
 			}
-			else
+			else if (event.type == sf::Event::KeyPressed && event.key.code == Keyboard::Space)
 			{
-				isTweening = true;
+				if (isTweening)
+				{
+					isTweening = false;
+					t = 0;
+				}
+				else
+				{
+					isTweening = true;
+				}
 			}
 		}
+
+		float dt = clock.restart().asSeconds();
+
+		update_state(dt);
+		render_frame();
+		window.display();
 	}
-
-	float dt = clock.restart().asSeconds();
-
-	update_state(dt);
-	render_frame();
-	window.display();
-}
 
 	return 0;
-}
-
-template<typename T>
-T lerp(T start, T end, float t)
-{
-	return start + (end - start) * t;
-}
-
-template<typename T>
-T easeIn(T start, T end, float t)
-{
-	return start + (end - start) * t * t * t;
-}
-
-template<typename T>
-T easeOut(T start, T end, float t)
-{
-	--t;
-	return start + (end - start) * (t * t * t + 1);
-}
-
-template<typename T>
-T easeInOut(T start, T end, float t)
-{
-	return start + (end - start) * (t * t * (3.0f - 2.0f * t));
-}
-
-template<typename T>
-T easeOutBack(T start, T end, float t)
-{
-	const float s = 1.70158f;
-	--t;
-	return start + (end - start) * (t * t * ((s + 1) * t + s) + 1);
-}
-
-template<typename T>
-T easeOutBounce(T start, T end, float t)
-{
-	if (t < (1 / 2.75f)) {
-		return start + (end - start) * (7.5625f*t*t);
-	}
-	else if (t < (2 / 2.75f)) {
-		float postFix = t -= (1.5f / 2.75f);
-		return start + (end - start) * (7.5625f*(postFix)*t + .75f);
-	}
-	else if (t < (2.5 / 2.75)) {
-		float postFix = t -= (2.25f / 2.75f);
-		return start + (end - start) * (7.5625f*(postFix)*t + .9375f);
-	}
-	else {
-		float postFix = t -= (2.625f / 2.75f);
-		return start + (end - start) * (7.5625f*(postFix)*t + .984375f);
-	}
 }
 
 void update_state(float dt)
