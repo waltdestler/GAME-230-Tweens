@@ -74,7 +74,7 @@ void update_state(float dt)
 	if (isTweening)
 		t = fminf(t + dt, 1);
 
-	Vector2f pos = easeOutBounce(START_POS, END_POS, t);
+	Vector2f pos = lerp(START_POS, END_POS, t);
 	shape.setPosition(pos);
 }
 
