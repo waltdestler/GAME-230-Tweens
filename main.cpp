@@ -8,6 +8,7 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Main.hpp>
 #include "tweens.h"
+#include "colorf.h"
 
 using namespace std;
 using namespace sf;
@@ -20,6 +21,8 @@ Font font;
 
 const Vector2f START_POS(100, 250);
 const Vector2f END_POS(600, 250);
+const ColorF START_COLOR(1, 0, 0);
+const ColorF END_COLOR(0, 1, 0);
 RectangleShape shape;
 
 float t = 0;
@@ -76,6 +79,9 @@ void update_state(float dt)
 
 	Vector2f pos = lerp(START_POS, END_POS, t);
 	shape.setPosition(pos);
+
+	ColorF col = lerp(START_COLOR, END_COLOR, t);
+	shape.setFillColor(col);
 }
 
 void render_frame()
